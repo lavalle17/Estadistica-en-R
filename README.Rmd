@@ -2,7 +2,7 @@
 title: "README"
 author: "C. Lavalle"
 date: "11-10-2021"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 # Programa

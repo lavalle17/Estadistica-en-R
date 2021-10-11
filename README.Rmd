@@ -1,11 +1,10 @@
 ---
-title: "README"
+title: "Programa"
 author: "C. Lavalle"
 date: "11-10-2021"
 output: rmarkdown::github_document
 ---
 
-# Programa
 - introduccion
 - estadistica descriptiva
 - test de hipotesis

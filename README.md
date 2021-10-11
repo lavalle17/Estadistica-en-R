@@ -1,9 +1,7 @@
-README
+Programa
 ================
 C. Lavalle
 11-10-2021
-
-# Programa
 
   - introduccion
   - estadistica descriptiva

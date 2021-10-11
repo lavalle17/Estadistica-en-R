@@ -44,11 +44,14 @@ head(base)
 <div id='id4' />
 # 4. Filtros
 ```{r}
-base[base$FUMA == 1, ] # Selecciona solo a las personas que fuman
-fumadores <- base[base$FUMA == 1, ] # Selecciona a los fumadores y los guarda como un objeto
-menores_de_35 <- base[base$EDAD <= 35, ] # Selecciona todos los menores o iguales a 35 años
-peso_menores_de_35 <- base$PESO[base$EDAD <= 35] # Selecciona el peso de las personas menores a 35 años
-peso_menores_de_35 <- base[base$EDAD <= 35,]$PESO # Selecciona el peso de las personas menores a 35 años
+fumadores <- base[base$FUMA == 1, ] # Fumadores
+fumadores
+menores_de_35 <- base[base$EDAD <= 35, ] # Personas menores o iguales a 35 años
+menores_de_35
+peso_menores_de_35 <- base$PESO[base$EDAD <= 35] # Peso de las personas menores a 35 años
+peso_menores_de_35
+peso_menores_de_35 <- base[base$EDAD <= 35,]$PESO # Peso de las personas menores a 35 años
+peso_menores_de_35
 ```
 
 **Recomendacion**

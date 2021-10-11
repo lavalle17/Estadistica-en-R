@@ -45,13 +45,13 @@ head(base)
 # 4. Filtros
 ```{r}
 fumadores <- base[base$FUMA == 1, ] # Fumadores
-fumadores
+head(fumadores)
 menores_de_35 <- base[base$EDAD <= 35, ] # Personas menores o iguales a 35 años
-menores_de_35
+head(menores_de_35)
 peso_menores_de_35 <- base$PESO[base$EDAD <= 35] # Peso de las personas menores a 35 años
-peso_menores_de_35
+head(peso_menores_de_35)
 peso_menores_de_35 <- base[base$EDAD <= 35,]$PESO # Peso de las personas menores a 35 años
-peso_menores_de_35
+head(peso_menores_de_35)
 ```
 
 **Recomendacion**

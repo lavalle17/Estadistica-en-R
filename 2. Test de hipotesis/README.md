@@ -3,25 +3,22 @@ Test de hipotesis
 C. Lavalle
 11-10-2021
 
-## Instalar librerias
+## 1\. Instalar librerias
 
 ``` r
 install.packages("TeachingDemos")
 ```
 
-# Cargar librerias
+## 2\. Cargar librerias
 
 ``` r
 library(TeachingDemos)
-```
-
-    ## Warning: package 'TeachingDemos' was built under R version 4.1.1
-
-``` r
 library(readxl)
 ```
 
-# Cargar base de datos
+## 3\. Cargar base de datos
+
+### a. General
 
 ``` r
 Ceramica <- read_excel("Ceramica.xlsx")
@@ -38,14 +35,41 @@ head(Ceramica)
     ## 5 Pomaire  13.8  7.06  5.34  0.2   0.2 
     ## 6 Pomaire  10.9  6.26  3.47  0.17  0.22
 
-# Base para test de medias y varianzas
+Este conjunto de datos corresponde a mediciones de metales en ceramicos
+de distintas zonas
+
+### b. Test de medias y varianzas
 
 ``` r
 Pomaire <- Ceramica[Ceramica$Site == "Pomaire", ]
-Quinchamali <- Ceramica[Ceramica$Site == "Quinchamali", ]
+head(Pomaire)
 ```
 
-# Bases para test de proporciones
+    ## # A tibble: 6 x 6
+    ##   Site       Al    Fe    Mg    Ca    Na
+    ##   <chr>   <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 Pomaire  14.4  7     4.3   0.15  0.51
+    ## 2 Pomaire  13.8  7.08  3.43  0.12  0.17
+    ## 3 Pomaire  14.6  7.09  3.88  0.13  0.2 
+    ## 4 Pomaire  11.5  6.37  5.64  0.16  0.14
+    ## 5 Pomaire  13.8  7.06  5.34  0.2   0.2 
+    ## 6 Pomaire  10.9  6.26  3.47  0.17  0.22
+
+``` r
+Quinchamali <- Ceramica[Ceramica$Site == "Quinchamali", ]
+head(Quinchamali)
+```
+
+    ## # A tibble: 5 x 6
+    ##   Site           Al    Fe    Mg    Ca    Na
+    ##   <chr>       <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1 Quinchamali  18.3  1.28  0.67  0.03  0.03
+    ## 2 Quinchamali  15.8  2.39  0.63  0.01  0.04
+    ## 3 Quinchamali  18    1.5   0.67  0.01  0.06
+    ## 4 Quinchamali  18    1.88  0.68  0.01  0.04
+    ## 5 Quinchamali  20.8  1.51  0.72  0.07  0.1
+
+### c. Test de proporciones
 
 ``` r
 Y1 <- ifelse(Ceramica$Site == "Pomaire",1,0)
@@ -57,7 +81,15 @@ exitos2 <- sum(Y2)
 n2 <- length(Y2)
 ```
 
-# Test hipotesis media
+Se generan proporciones para el test de proporciones, mediante la
+funcion ifelse() se asginan valores 1 si la zona de observacion es
+pomaire, 0 en su defecto. debido a que pomaire se asigna como 1, su suma
+(sum()) es el total de registros cuya zona es igual a pomaire, el
+comando length() mide el numero de observaciones, asi la division de las
+variables “exitos” y “n” nos da la proporcion de observaciones
+pertenecientes a pomaire.
+
+## 4\. Test de 1 muestra
 
 ``` r
 mean(Pomaire$Al)
@@ -65,10 +97,24 @@ mean(Pomaire$Al)
 
     ## [1] 12.56429
 
-# Varianza poblacional desconocida
+``` r
+boxplot(Pomaire$Al)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+### a. Varianza poblacional desconocida
+
+Argumentos t.test():  
+\- datos para el analisis  
+\- la hipotesis alternativa  
+\- nivel de confianza  
+\- media a comparar
+
+#### 1\. Two.sided
 
 ``` r
-t.test(Pomaire$Al,alternative = "two.sided",conf.level = 0.95, mu = 17) # Realiza el test para mu = 17 
+t.test(Pomaire$Al,alternative = "two.sided",conf.level = 0.95, mu = 17)
 ```
 
     ## 
@@ -83,10 +129,14 @@ t.test(Pomaire$Al,alternative = "two.sided",conf.level = 0.95, mu = 17) # Realiz
     ## mean of x 
     ##  12.56429
 
-Si es igual a 17
+  - H1: media muestral \!= media poblacional  
+  - p-value \< significancia, se rechaza H0  
+  - H1: media muestral \!= media poblacional (17)
+
+#### 2\. Less
 
 ``` r
-t.test(Pomaire$Al,alternative = "less",mu = 18, conf.level = 0.95) # Realiza el test para mu < 18
+t.test(Pomaire$Al,alternative = "less",mu = 18, conf.level = 0.95)
 ```
 
     ## 
@@ -101,10 +151,14 @@ t.test(Pomaire$Al,alternative = "less",mu = 18, conf.level = 0.95) # Realiza el 
     ## mean of x 
     ##  12.56429
 
-No es menor a 18
+  - H1: media muestral \< media poblacional
+  - p-value \< significancia, se rechaza H0
+  - H1: media muestral \< media poblacional (18)
+
+#### 3\. Greater
 
 ``` r
-t.test(Pomaire$Al,alternative = "greater", mu = 16, conf.level = 0.95) # Realiza el test para mu > 16
+t.test(Pomaire$Al,alternative = "greater", mu = 16, conf.level = 0.95)
 ```
 
     ## 
@@ -119,23 +173,39 @@ t.test(Pomaire$Al,alternative = "greater", mu = 16, conf.level = 0.95) # Realiza
     ## mean of x 
     ##  12.56429
 
-No es mayor a 16
+  - H1: media muestral \> media poblacional
+  - p-value \> significancia, se acepta H0
+  - no existe evidencia de que la media muestral sea significativamente
+    superior a la media poblacional (16)
+
+#### 4\. Intervalo de confianza
 
 ``` r
 Test_1 <- t.test(Pomaire$Al,alternative = "two.sided",conf.level = 0.95)
-as.numeric(Test_1$conf.int) # Entrega el intervalo deconfianza
+as.numeric(Test_1$conf.int)
 ```
 
     ## [1] 11.76919 13.35938
 
-# Varianza poblacional conocida
+### b. Varianza poblacional conocida
+
+Argumentos z.test():  
+\- datos para el analisis  
+\- desviacion estandar poblacional  
+\- hipotesis alternativa  
+\- nivel de confianza  
+\- media a comparar
+
+#### 1\. Calculo de la desviacion estandar
 
 ``` r
-sigma <- sd(Quinchamali$Al) # Varianza "poblacional"
+sigma <- sd(Quinchamali$Al) # desviacion estandar "poblacional"
 ```
 
+#### 2\. Test con varianza poblacional conocida
+
 ``` r
-z.test(Quinchamali$Al, sd = sigma, alternative = "two.sided",conf.level = 0.95, mu = 17) # test con varianza POBLACIONAL conocida
+z.test(Quinchamali$Al, sd = sigma, alternative = "two.sided",conf.level = 0.95, mu = 17) 
 ```
 
     ## 
@@ -151,7 +221,11 @@ z.test(Quinchamali$Al, sd = sigma, alternative = "two.sided",conf.level = 0.95, 
     ## mean of Quinchamali$Al 
     ##                  18.18
 
-No es igual a 17
+  - H1: media muestral \!= media poblacional
+  - p-value \> significancia, se acepta H0
+  - H0: media muestral == media poblacional (17)
+
+#### 3\. Intervalo de confianza
 
 ``` r
 Test_2 <-z.test(Quinchamali$Al, sd = sigma, alternative = "two.sided", conf.level = 0.95)
@@ -160,7 +234,12 @@ as.numeric(Test_2$conf.int) # Entrega el intervalo deconfianza
 
     ## [1] 16.62383 19.73617
 
-# Test de proporciones
+### c. Test de proporciones
+
+  - exitos1: total de registros cuya zona es igual a pomaire  
+  - n1: numero total de registros
+
+<!-- end list -->
 
 ``` r
 prop.test(exitos1, n1, alternative = "two.sided", conf.level = 0.95) 
@@ -178,9 +257,12 @@ prop.test(exitos1, n1, alternative = "two.sided", conf.level = 0.95)
     ##         p 
     ## 0.5384615
 
-Si no se coloca valor de p H0: P = 0.5 | H1: P NO ES 0.5 Se asume
-criterio de varianza maxima (p=0.5) La proporcion de ceramicas de
-Quinchamali es igual a 0.5
+  - Si no se coloca valor de p = 0.5  
+  - H0: P == 0.5 | H1: P \!= 0.5  
+  - p-value \> significancia, se acepta H0  
+  - La proporcion de ceramicas de Quinchamali es igual a 0.5
+
+### Intervalo de confianza
 
 ``` r
 Test_3 <- prop.test(exitos1,  n1, alternative = "two.sided",conf.level = 0.95)
@@ -189,7 +271,7 @@ as.numeric(Test_3$conf.int)
 
     ## [1] 0.3374768 0.7286162
 
-# Test de varianza
+### d. Test de varianza
 
 ``` r
 sigma.test(Pomaire$Al, alternative = "two.sided", conf.level = 0.95) # Test de una varianza
@@ -216,9 +298,23 @@ as.numeric(Test_4$conf.int) # Entrega el intervalo deconfianza
 
     ## [1] 0.9966258 4.9218149
 
-# Comparacion de 2 muestras
+## 5\. Test de 2 muestras
 
-## Varianza
+``` r
+mean(Pomaire$Al); mean(Quinchamali$Al)
+```
+
+    ## [1] 12.56429
+
+    ## [1] 18.18
+
+``` r
+boxplot(Pomaire$Al, Quinchamali$Al)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+### a. Varianza
 
 ``` r
 var.test(Pomaire$Al, Quinchamali$Al, alternative = "two.sided",conf.level = 0.95) # test de 2 varianzas
@@ -238,7 +334,7 @@ var.test(Pomaire$Al, Quinchamali$Al, alternative = "two.sided",conf.level = 0.95
 
 Tienen varianzas iguales
 
-## Medias con varianzas iguales
+### b. Medias con varianzas iguales
 
 ``` r
 t.test(Pomaire$Al, Quinchamali$Al, alternative = "two.sided",conf.level = 0.95, var.equal = TRUE)
@@ -258,7 +354,7 @@ t.test(Pomaire$Al, Quinchamali$Al, alternative = "two.sided",conf.level = 0.95, 
 
 Las medias no son iguales
 
-## Medias con varianzas distintas
+### c. Medias con varianzas distintas
 
 ``` r
 t.test(Pomaire$Al,Quinchamali$Al, alternative = "two.sided",conf.level = 0.95, var.equal = FALSE)
@@ -276,10 +372,9 @@ t.test(Pomaire$Al,Quinchamali$Al, alternative = "two.sided",conf.level = 0.95, v
     ## mean of x mean of y 
     ##  12.56429  18.18000
 
-OJO\! Este resultado no es correcto porque no tienen varainzas iguales
-(SOLO EJEMPLO)
+OJO\! Este es solo un ejemplo de uso del script
 
-## Proporciones de dos muestras
+### d. Proporciones de dos muestras
 
 ``` r
 prop.test(x = c(exitos1, exitos2), n = c(n1, n2), alternative = "two.sided", conf.level = 0.95)

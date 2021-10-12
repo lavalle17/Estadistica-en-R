@@ -3,11 +3,28 @@ Test de hipotesis
 C. Lavalle
 11-10-2021
 
+1.  [Instalar librerias](#id1)  
+2.  [Cargar librerias](#id2)  
+3.  [Cargar base de datos](#id3)  
+4.  [Test de 1 muestra](#id4)  
+    4.1 Varianza poblacional desconocida  
+    4.2 Varianza poblacional conocida  
+    4.3 Test de proporcione  
+5.  [Test de 2 muestras](#id5)  
+    5.1 Varianza  
+    5.2 Medias con varianzas iguales  
+    5.3 Medias con varianzas distintas  
+    5.4 Proporciones de dos muestras
+
+<div id='id1' />
+
 ## 1\. Instalar librerias
 
 ``` r
 install.packages("TeachingDemos")
 ```
+
+<div id='id2' />
 
 ## 2\. Cargar librerias
 
@@ -15,6 +32,8 @@ install.packages("TeachingDemos")
 library(TeachingDemos)
 library(readxl)
 ```
+
+<div id='id3' />
 
 ## 3\. Cargar base de datos
 
@@ -88,6 +107,8 @@ pomaire, 0 en su defecto. debido a que pomaire se asigna como 1, su suma
 comando length() mide el numero de observaciones, asi la division de las
 variables “exitos” y “n” nos da la proporcion de observaciones
 pertenecientes a pomaire.
+
+<div id='id4' />
 
 ## 4\. Test de 1 muestra
 
@@ -297,6 +318,8 @@ as.numeric(Test_4$conf.int) # Entrega el intervalo deconfianza
 ```
 
     ## [1] 0.9966258 4.9218149
+
+<div id='id5' />
 
 ## 5\. Test de 2 muestras
 
